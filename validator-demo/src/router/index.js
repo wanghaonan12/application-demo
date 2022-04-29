@@ -4,14 +4,14 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 const routes = [
-  
+
   {
     path: '/',
     name: 'LoginPage',
     component: () => import(/* webpackChunkName: "about" */ '../views/LoginPage.vue')
   },
   {
-    path: '/',
+    path: '/register',
     name: 'RegisterPage',
     component: () => import(/* webpackChunkName: "about" */ '../views/RegisterPage.vue')
   }
