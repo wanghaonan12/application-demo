@@ -1,38 +1,34 @@
 <template>
   <div class="bg row">
-    <v-card class="col" hover>
-      <v-form v-model="valid" lazy-validation ref="form">
-        <!-- 手机号和密码 -->
-        <v-text-field v-model="phone" required label="Phone" :rules="phoneRules"></v-text-field>
-
-        <v-text-field v-model="password" required label="Password" :rules="passwordRules"></v-text-field>
-
-        <v-btn color="primary" class="mr-4" @click="submit" >登录</v-btn>
-        <v-btn color="warning" @click="reset">注册</v-btn>
-      </v-form>
-    </v-card>
-
-    <!-- 遮罩层 -->
-    <v-overlay absolute z-index="5" class="mask"></v-overlay>
+    <div class="card">
+      <div class="card-side front">
+        <div>Front Side</div>
+      </div>
+      <div class="card-side back">
+        <div>Back Side</div>
+      </div>
+    </div>
   </div>
 </template>
 <script src="https://unpkg.com/lvp.js/lib/lvp.js"></script>
 <script>
+import router from '@/router'
 export default {
   name: 'LoginPage',
   data() {
     return {
       phone: '',
       password: '',
-      phoneRules: [(v) => (/^[1][3456789]\d{9}/.test(v)) || '手机号格式错'],
+      phoneRules: [(v) => /^[1][3456789]\d{9}/.test(v) || '手机号格式错'],
       passwordRules: [
-        (v) => (/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{11,}/.test(v)) || '密码必须是包含至少一个大小字母的11位字符串'
+        (v) =>
+          /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{11,}/.test(v) ||
+          '密码必须是包含至少一个大小字母的11位字符串'
       ]
     }
   },
   methods: {
     submit() {
-      // this.$refs.form.validate()
       this.validate()
       this.axios({
         method: 'post',
@@ -62,6 +58,9 @@ export default {
           this.$layer.alert('登录失败')
         }
       })
+    },
+    toRegisterPage() {
+      router.push({ path: 'register' })
     }
   }
 }
@@ -71,25 +70,53 @@ export default {
 .bg {
   width: 100vw;
   height: 100vh;
-  background: url('http://47.96.31.161:9000/my-file/img112.jpg');
-  background-size: 100% 100%;
-}
-.mask {
-  background-image: linear-gradient(to right, #bf30ac 0%, #0f9d58 100%);
-  opacity: 0.7;
-}
+  background: url('https://wang-rich.oss-cn-hangzhou.aliyuncs.com/md/202204221044969.jpg');
+  background-size:cover;
+  .card {
+    perspective: 150rem;
+    position: relative;
+    height: 40rem;
+    max-width: 400px;
+    margin: 2rem;
+    box-shadow: none;
+    background-color: none;
+  }
 
-.row {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  .col {
-    flex: 0 0 40%;
-    height: 360px;
-    background-color: #eee;
-    border-radius: 10px;
-    z-index: 10;
-    text-align: center;
+  .card-side {
+    height: 35rem;
+    border-radius: 15px;
+    transition: all 0.8s ease;
+    backface-visibility: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 80%;
+    padding: 2rem;
+    color: #fff;
+  }
+
+  .card-side.back {
+    transform: rotateY(-180deg);
+    background-color: #4158d0;
+    background-image: linear-gradient(
+      43deg,
+      #4158d0 0%,
+      #c850c0 46%,
+      #ffcc70 100%
+    );
+  }
+
+  .card-side.front {
+    background-color: #0093e9;
+    background-image: linear-gradient(160deg, #0093e9 0%, #80d0c7 100%);
+  }
+
+  .card:hover .card-side.front {
+    transform: rotateY(180deg);
+  }
+
+  .card:hover .card-side.back {
+    transform: rotateY(0deg);
   }
 }
 </style>
